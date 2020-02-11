@@ -120,82 +120,82 @@ fi
 # AFFECTIVEPICTURES ANALYSIS
 ####################################################################
 
-TEMPLATE=affectivepictures_template.fsf
+# TEMPLATE=affectivepictures_template.fsf
 
-for RUN in {1..3}
-do
-	echo -e "\n\n${CONTAINER} Beginning analysis for affective pictures run ${RUN}"
+# for RUN in {1..3}
+# do
+# 	echo -e "\n\n${CONTAINER} Beginning analysis for affective pictures run ${RUN}"
 
-	INPUT_DATA=`eval 'echo $'func_affectivepictures_r${RUN} `
-	FEAT_OUTPUT_DIR=${OUTPUT_DIR}/affectivepictures_run${RUN}.feat 
-	NEUTRAL_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Neutral_all.txt
-	FEAR_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Fear_all.txt
-	HAPPY_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Happy_all.txt
-	SAD_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Sad_all.txt
-	DISGUST_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Disgust_all.txt
+# 	INPUT_DATA=`eval 'echo $'func_affectivepictures_r${RUN} `
+# 	FEAT_OUTPUT_DIR=${OUTPUT_DIR}/affectivepictures_run${RUN}.feat 
+# 	NEUTRAL_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Neutral_all.txt
+# 	FEAR_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Fear_all.txt
+# 	HAPPY_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Happy_all.txt
+# 	SAD_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Sad_all.txt
+# 	DISGUST_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Disgust_all.txt
 
-	VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV FEAR_EV HAPPY_EV SAD_EV DISGUST_EV )
+# 	VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV FEAR_EV HAPPY_EV SAD_EV DISGUST_EV )
 
-	TEMPLATE=$FLYWHEEL_BASE/affectivepictures_template.fsf
-	DESIGN_FILE=${OUTPUT_DIR}/affectivepictures_run${RUN}.fsf
-	cp ${TEMPLATE} ${DESIGN_FILE}
+# 	TEMPLATE=$FLYWHEEL_BASE/affectivepictures_template.fsf
+# 	DESIGN_FILE=${OUTPUT_DIR}/affectivepictures_run${RUN}.fsf
+# 	cp ${TEMPLATE} ${DESIGN_FILE}
 
-	# loop through and preform substitution
-	for var_name in ${VAR_STRINGS[@]}; do
+# 	# loop through and preform substitution
+# 	for var_name in ${VAR_STRINGS[@]}; do
 
-	  var_val=` eval 'echo $'$var_name `
+# 	  var_val=` eval 'echo $'$var_name `
 
-	  echo will substitute $var_val for $var_name in design file
-	  #We need to replace and backslashes with "\/"
-	  var_val=` echo ${var_val////"\/"} `
+# 	  echo will substitute $var_val for $var_name in design file
+# 	  #We need to replace and backslashes with "\/"
+# 	  var_val=` echo ${var_val////"\/"} `
 
-	  sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
-	  echo sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
+# 	  sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
+# 	  echo sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
 
-	done
+# 	done
 	
-	# RUN THE Algorithm with the .FSF FILE
-	ls $INPUT_DATA
+# 	# RUN THE Algorithm with the .FSF FILE
+# 	ls $INPUT_DATA
 
-	echo Starting FEAT for Affective Pictures run ${RUN}...
-	time feat ${DESIGN_FILE}
-	FEAT_EXIT_STATUS=$?
+# 	echo Starting FEAT for Affective Pictures run ${RUN}...
+# 	time feat ${DESIGN_FILE}
+# 	FEAT_EXIT_STATUS=$?
 
-	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-	  echo -e "FEAT completed successfully!"
-	fi
+# 	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+# 	  echo -e "FEAT completed successfully!"
+# 	fi
 
-	echo What have we got now
-	ls ${OUTPUT_DIR}
+# 	echo What have we got now
+# 	ls ${OUTPUT_DIR}
 
-	# Upon success, convert index to a webpage
-	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-	  # Convert index to standalone index
-	  echo "$CONTAINER  generating output html..."
-	  output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
-	  for f in $output_html_files; do
-	    web2htmloutput=${OUTPUT_DIR}/${subject}_affpics_run${RUN}_`basename $f`
-	    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
-	  done
-	fi
+# 	# Upon success, convert index to a webpage
+# 	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+# 	  # Convert index to standalone index
+# 	  echo "$CONTAINER  generating output html..."
+# 	  output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
+# 	  for f in $output_html_files; do
+# 	    web2htmloutput=${OUTPUT_DIR}/${subject}_affpics_run${RUN}_`basename $f`
+# 	    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+# 	  done
+# 	fi
 
-	# CLEANUP THE OUTPUT DIRECTORIES
-	echo feat directory is ${FEAT_OUTPUT_DIR}
+# 	# CLEANUP THE OUTPUT DIRECTORIES
+# 	echo feat directory is ${FEAT_OUTPUT_DIR}
 
-	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+# 	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
 
-	  echo -e "${CONTAINER}  Compressing outputs..."
+# 	  echo -e "${CONTAINER}  Compressing outputs..."
 
-	  # Zip and move the relevant files to the output directory
-	  zip -rq ${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.zip ${FEAT_OUTPUT_DIR}
-	  rm -rf ${FEAT_OUTPUT_DIR}
+# 	  # Zip and move the relevant files to the output directory
+# 	  zip -rq ${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.zip ${FEAT_OUTPUT_DIR}
+# 	  rm -rf ${FEAT_OUTPUT_DIR}
 	  
-	fi
+# 	fi
 
-	echo Lets see what we have after zipping etc
-	ls ${OUTPUT_DIR}
+# 	echo Lets see what we have after zipping etc
+# 	ls ${OUTPUT_DIR}
 
-done
+# done
 
 
 ####################################################################
