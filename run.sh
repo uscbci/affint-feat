@@ -202,157 +202,157 @@ fi
 # EMOREG ANALYSIS
 ####################################################################
 
-TEMPLATE=emoreg_template.fsf
-echo -e "\n\n${CONTAINER} Beginning analysis for emoreg task"
+# TEMPLATE=emoreg_template.fsf
+# echo -e "\n\n${CONTAINER} Beginning analysis for emoreg task"
 
-INPUT_DATA=`eval 'echo $'func_emoreg `
-FEAT_OUTPUT_DIR=${OUTPUT_DIR}/emoreg.feat 
-NEUTRAL_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_neutral_all.txt
-NEGATIVE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_negative_all.txt
-REAPPRAISE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_Rnegative_all.txt
+# INPUT_DATA=`eval 'echo $'func_emoreg `
+# FEAT_OUTPUT_DIR=${OUTPUT_DIR}/emoreg.feat 
+# NEUTRAL_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_neutral_all.txt
+# NEGATIVE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_negative_all.txt
+# REAPPRAISE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_Rnegative_all.txt
 
-VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV NEGATIVE_EV REAPPRAISE_EV)
+# VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV NEGATIVE_EV REAPPRAISE_EV)
 
-DESIGN_FILE=${OUTPUT_DIR}/emoreg.fsf
+# DESIGN_FILE=${OUTPUT_DIR}/emoreg.fsf
 
-cp ${TEMPLATE} ${DESIGN_FILE}
+# cp ${TEMPLATE} ${DESIGN_FILE}
 
-# loop through and preform substitution
-for var_name in ${VAR_STRINGS[@]}; do
+# # loop through and preform substitution
+# for var_name in ${VAR_STRINGS[@]}; do
 
-  var_val=` eval 'echo $'$var_name `
+#   var_val=` eval 'echo $'$var_name `
 
-  echo will substitute $var_val for $var_name in design file
-  #We need to replace and backslashes with "\/"
-  var_val=` echo ${var_val////"\/"} `
+#   echo will substitute $var_val for $var_name in design file
+#   #We need to replace and backslashes with "\/"
+#   var_val=` echo ${var_val////"\/"} `
 
-  sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
-  echo sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
+#   sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
+#   echo sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
 
-done
+# done
 
-# RUN THE Algorithm with the .FSF FILE
-ls $INPUT_DATA
+# # RUN THE Algorithm with the .FSF FILE
+# ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
-echo Starting FEAT for emoreg...
-time feat ${DESIGN_FILE}
-FEAT_EXIT_STATUS=$?
+# echo Starting FEAT for emoreg...
+# time feat ${DESIGN_FILE}
+# FEAT_EXIT_STATUS=$?
 
-if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-  echo -e "FEAT completed successfully!"
-fi
+# if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+#   echo -e "FEAT completed successfully!"
+# fi
 
-echo What have we got now
-ls ${OUTPUT_DIR}
+# echo What have we got now
+# ls ${OUTPUT_DIR}
 
-# Upon success, convert index to a webpage
-if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-  # Convert index to standalone index
-  echo "$CONTAINER  generating output html..."
-  output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
-  for f in $output_html_files; do
-    web2htmloutput=${OUTPUT_DIR}/${subject}_emoreg_`basename $f`
-    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
-  done
-fi
+# # Upon success, convert index to a webpage
+# if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+#   # Convert index to standalone index
+#   echo "$CONTAINER  generating output html..."
+#   output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
+#   for f in $output_html_files; do
+#     web2htmloutput=${OUTPUT_DIR}/${subject}_emoreg_`basename $f`
+#     python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+#   done
+# fi
 
-# CLEANUP THE OUTPUT DIRECTORIES
-echo feat directory is ${FEAT_OUTPUT_DIR}
+# # CLEANUP THE OUTPUT DIRECTORIES
+# echo feat directory is ${FEAT_OUTPUT_DIR}
 
-if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+# if [[ $FEAT_EXIT_STATUS == 0 ]]; then
 
-  echo -e "${CONTAINER}  Compressing outputs..."
+#   echo -e "${CONTAINER}  Compressing outputs..."
 
-  # Zip and move the relevant files to the output directory
-  echo zip -rq ${OUTPUT_DIR}/${subject}_emoreg.zip ${FEAT_OUTPUT_DIR}
-  zip -rq ${OUTPUT_DIR}/${subject}_emoreg.zip ${FEAT_OUTPUT_DIR}
-  rm -rf ${FEAT_OUTPUT_DIR}
+#   # Zip and move the relevant files to the output directory
+#   echo zip -rq ${OUTPUT_DIR}/${subject}_emoreg.zip ${FEAT_OUTPUT_DIR}
+#   zip -rq ${OUTPUT_DIR}/${subject}_emoreg.zip ${FEAT_OUTPUT_DIR}
+#   rm -rf ${FEAT_OUTPUT_DIR}
   
-fi
+# fi
 
-echo Lets see what we have after zipping etc
-ls ${OUTPUT_DIR}
+# echo Lets see what we have after zipping etc
+# ls ${OUTPUT_DIR}
 
 
 ####################################################################
 # FACEEMOTION ANALYSIS
 ####################################################################
 
-TEMPLATE=faces_template.fsf
-echo -e "\n\n${CONTAINER} Beginning analysis for faceemotion task"
+# TEMPLATE=faces_template.fsf
+# echo -e "\n\n${CONTAINER} Beginning analysis for faceemotion task"
 
-INPUT_DATA=`eval 'echo $'func_faceemotion`
-FEAT_OUTPUT_DIR=${OUTPUT_DIR}/faceemotion.feat
+# INPUT_DATA=`eval 'echo $'func_faceemotion`
+# FEAT_OUTPUT_DIR=${OUTPUT_DIR}/faceemotion.feat
 
-INSTRUCTIONS_EV=${DATA_DIR}/logs/${subject}_faceemotion-run1-faces-instructions.txt
-NAMING_EV=${DATA_DIR}/logs/${subject}_run1-faces-naming.txt
-INTENSITY_EV=${DATA_DIR}/logs/${subject}_run1-faces-intensity.txt
+# INSTRUCTIONS_EV=${DATA_DIR}/logs/${subject}-faceemotion-run1-faces-instructions.txt
+# NAMING_EV=${DATA_DIR}/logs/${subject}-run1-faces-naming.txt
+# INTENSITY_EV=${DATA_DIR}/logs/${subject}-run1-faces-intensity.txt
 
 
-VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR INSTRUCTIONS_EV NAMING_EV INTENSITY_EV)
+# VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR INSTRUCTIONS_EV NAMING_EV INTENSITY_EV)
 
-DESIGN_FILE=${OUTPUT_DIR}/faceemotion.fsf
+# DESIGN_FILE=${OUTPUT_DIR}/faceemotion.fsf
 
-cp ${TEMPLATE} ${DESIGN_FILE}
+# cp ${TEMPLATE} ${DESIGN_FILE}
 
-# loop through and preform substitution
-for var_name in ${VAR_STRINGS[@]}; do
+# # loop through and preform substitution
+# for var_name in ${VAR_STRINGS[@]}; do
 
-  var_val=` eval 'echo $'$var_name `
+#   var_val=` eval 'echo $'$var_name `
 
-  echo will substitute $var_val for $var_name in design file
-  #We need to replace and backslashes with "\/"
-  var_val=` echo ${var_val////"\/"} `
+#   echo will substitute $var_val for $var_name in design file
+#   #We need to replace and backslashes with "\/"
+#   var_val=` echo ${var_val////"\/"} `
 
-  sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
-  echo sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
+#   sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
+#   echo sed -i -e "s/\^${var_name}\^/${var_val}/g" ${DESIGN_FILE}
 
-done
+# done
 
-# RUN THE Algorithm with the .FSF FILE
-ls $INPUT_DATA
+# # RUN THE Algorithm with the .FSF FILE
+# ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
-echo Starting FEAT for faceemotion...
-time feat ${DESIGN_FILE}
-FEAT_EXIT_STATUS=$?
+# echo Starting FEAT for faceemotion...
+# time feat ${DESIGN_FILE}
+# FEAT_EXIT_STATUS=$?
 
-if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-  echo -e "FEAT completed successfully!"
-fi
+# if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+#   echo -e "FEAT completed successfully!"
+# fi
 
-echo What have we got now
-ls ${OUTPUT_DIR}
+# echo What have we got now
+# ls ${OUTPUT_DIR}
 
-# Upon success, convert index to a webpage
-if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-  # Convert index to standalone index
-  echo "$CONTAINER  generating output html..."
-  output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
-  for f in $output_html_files; do
-    web2htmloutput=${OUTPUT_DIR}/${subject}_faceemotion_`basename $f`
-    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
-  done
-fi
+# # Upon success, convert index to a webpage
+# if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+#   # Convert index to standalone index
+#   echo "$CONTAINER  generating output html..."
+#   output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
+#   for f in $output_html_files; do
+#     web2htmloutput=${OUTPUT_DIR}/${subject}_faceemotion_`basename $f`
+#     python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+#   done
+# fi
 
-# CLEANUP THE OUTPUT DIRECTORIES
-echo feat directory is ${FEAT_OUTPUT_DIR}
+# # CLEANUP THE OUTPUT DIRECTORIES
+# echo feat directory is ${FEAT_OUTPUT_DIR}
 
-if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+# if [[ $FEAT_EXIT_STATUS == 0 ]]; then
 
-  echo -e "${CONTAINER}  Compressing outputs..."
+#   echo -e "${CONTAINER}  Compressing outputs..."
 
-  # Zip and move the relevant files to the output directory
-  zip -rq ${OUTPUT_DIR}/${subject}_faceemotion.zip ${FEAT_OUTPUT_DIR}
-  rm -rf ${FEAT_OUTPUT_DIR}
+#   # Zip and move the relevant files to the output directory
+#   zip -rq ${OUTPUT_DIR}/${subject}_faceemotion.zip ${FEAT_OUTPUT_DIR}
+#   rm -rf ${FEAT_OUTPUT_DIR}
   
-fi
+# fi
 
-echo Lets see what we have after zipping etc
-ls ${OUTPUT_DIR}
+# echo Lets see what we have after zipping etc
+# ls ${OUTPUT_DIR}
 
 ####################################################################
 # THEORYOFMIND ANALYSIS
@@ -361,12 +361,12 @@ ls ${OUTPUT_DIR}
 TEMPLATE=tom_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for tom task"
 
-INPUT_DATA=`eval 'echo $'func_faceemotion`
+INPUT_DATA=`eval 'echo $'func_tom`
 FEAT_OUTPUT_DIR=${OUTPUT_DIR}/tom.feat
 
 PHYS_EV=${DATA_DIR}/logs/${subject}_tom_run1_physical_all.txt
-COG_EV=${DATA_DIR}/logs/${subject}_tom_run1_cognitive_all.txt
-AFFECT_EV=${DATA_DIR}/logs/${subject}_tom_run1_affective_all.txt
+COG_EV=${DATA_DIR}/logs/${subject}_tom_run1_cognitive_tom_all.txt
+AFFECT_EV=${DATA_DIR}/logs/${subject}_tom_run1_affective_tom_all.txt
 
 VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR PHYS_EV COG_EV AFFECT_EV)
 
