@@ -136,11 +136,23 @@ do
 	SAD_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Sad_all.txt
 	DISGUST_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Disgust_all.txt
 
-	VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV FEAR_EV HAPPY_EV SAD_EV DISGUST_EV )
-
+	
 	TEMPLATE=$FLYWHEEL_BASE/affectivepictures_template.fsf
 	DESIGN_FILE=${OUTPUT_DIR}/affectivepictures_run${RUN}.fsf
 	cp ${TEMPLATE} ${DESIGN_FILE}
+
+  #Check number of timepoints in data
+  NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
+  
+  #Should be 120 for these runs
+  if [ $NUMTIMEPOINTS -eq 186 ]; then
+    echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
+  else
+    echo "WARNING!!! Number of timepoints should be 186 but is ${NUMTIMEPOINTS}"
+  fi
+
+  VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV FEAR_EV HAPPY_EV SAD_EV DISGUST_EV NUMTIMEPOINTS)
+
 
 	# loop through and preform substitution
 	for var_name in ${VAR_STRINGS[@]}; do
@@ -227,7 +239,17 @@ NEUTRAL_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_neutral_all.txt
 NEGATIVE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_negative_all.txt
 REAPPRAISE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_Rnegative_all.txt
 
-VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV NEGATIVE_EV REAPPRAISE_EV)
+#Check number of timepoints in data
+NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
+
+#Should be 120 for these runs
+if [ $NUMTIMEPOINTS -eq 285 ]; then
+  echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
+else
+  echo "WARNING!!! Number of timepoints should be 285 but is ${NUMTIMEPOINTS}"
+fi
+
+VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV NEGATIVE_EV REAPPRAISE_EV NUMTIMEPOINTS)
 
 DESIGN_FILE=${OUTPUT_DIR}/emoreg.fsf
 
@@ -306,8 +328,18 @@ INSTRUCTIONS_EV=${DATA_DIR}/logs/${subject}-faceemotion-run1-faces-instructions.
 NAMING_EV=${DATA_DIR}/logs/${subject}-run1-faces-naming.txt
 INTENSITY_EV=${DATA_DIR}/logs/${subject}-run1-faces-intensity.txt
 
+#Check number of timepoints in data
+NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
 
-VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR INSTRUCTIONS_EV NAMING_EV INTENSITY_EV)
+#Should be 120 for these runs
+if [ $NUMTIMEPOINTS -eq 120 ]; then
+  echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
+else
+  echo "WARNING!!! Number of timepoints should be 120 but is ${NUMTIMEPOINTS}"
+fi
+
+
+VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR INSTRUCTIONS_EV NAMING_EV INTENSITY_EV NUMTIMEPOINTS)
 
 DESIGN_FILE=${OUTPUT_DIR}/faceemotion.fsf
 
@@ -384,7 +416,17 @@ PHYS_EV=${DATA_DIR}/logs/${subject}_tom_run1_physical_all.txt
 COG_EV=${DATA_DIR}/logs/${subject}_tom_run1_cognitive_tom_all.txt
 AFFECT_EV=${DATA_DIR}/logs/${subject}_tom_run1_affective_tom_all.txt
 
-VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR PHYS_EV COG_EV AFFECT_EV)
+#Check number of timepoints in data
+NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
+
+#Should be 120 for these runs
+if [ $NUMTIMEPOINTS -eq 234 ]; then
+  echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
+else
+  echo "WARNING!!! Number of timepoints should be 234 but is ${NUMTIMEPOINTS}"
+fi
+
+VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR PHYS_EV COG_EV AFFECT_EV NUMTIMEPOINTS)
 
 DESIGN_FILE=${OUTPUT_DIR}/tom.fsf
 
