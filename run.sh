@@ -67,9 +67,11 @@ if [[ -z $logs_file ]]; then
   exit 1
 fi
 
-unzip $logs_file -d $DATA_DIR
-#ls $DATA_DIR
-#ls $DATA_DIR/logs
+mkdir ${DATA_DIR}/logs
+unzip $logs_file -d $DATA_DIR/logs
+ls $DATA_DIR
+ls $DATA_DIR/logs
+
 
 ##GET SUBJECT ID
 subfolder=`find $DATA_DIR/processed/fmriprep/sub-* -maxdepth 0 | head -1`
@@ -179,30 +181,39 @@ do
 	  done
 	fi
 
-	# CLEANUP THE OUTPUT DIRECTORIES
-	echo feat directory is ${FEAT_OUTPUT_DIR}
 
-	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
-
-	  echo -e "${CONTAINER}  Compressing outputs..."
-
-	  # Zip and move the relevant files to the output directory
-	  zip -rq ${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.zip ${FEAT_OUTPUT_DIR}
-	  rm -rf ${FEAT_OUTPUT_DIR}
-	  
-	fi
-
-	echo Lets see what we have after zipping etc
-	ls ${OUTPUT_DIR}
 
 done
 
 ####################################################################
 # AFFECTIVEPICTURES PREPARE FOR MVPA
 ####################################################################
+
+
+#RUN THE CONCATENATION SCRIPT
 ${FLYWHEEL_BASE}/mvpa_prepare.py ${subject}
 
-exit QUITTING AFTER AFFECTIVEPICTURES
+#NOW WE CAN ZIP THE FEAT FOLDERS
+# CLEANUP THE OUTPUT DIRECTORIES
+
+for RUN in {1..3}
+do
+  FEAT_OUTPUT_DIR=${OUTPUT_DIR}/affectivepictures_run${RUN}.feat 
+  echo feat directory is ${FEAT_OUTPUT_DIR}
+
+  if [[ $FEAT_EXIT_STATUS == 0 ]]; then
+
+    echo -e "${CONTAINER}  Compressing outputs..."
+
+    # Zip and move the relevant files to the output directory
+    zip -rq ${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.zip ${FEAT_OUTPUT_DIR}
+    rm -rf ${FEAT_OUTPUT_DIR}
+    
+  fi
+done
+echo Lets see what we have after zipping etc
+ls ${OUTPUT_DIR}
+
 ####################################################################
 #EMOREG ANALYSIS
 ####################################################################

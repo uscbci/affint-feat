@@ -19,13 +19,13 @@ INPUT_DIR="%s/input" % FLYWHEEL_BASE
 
 numcopes = 5
 
-command = "fslmerge -t %s/%s_affectivepictures_all " % (OUTPUT_DIR,subject)
+command = "fslmerge -t %s/%s_affectivepictures_allzstats " % (OUTPUT_DIR,subject)
 
 for run in range(1,4):
 	feat_dir = "%s/affectivepictures_run%d.feat" % (OUTPUT_DIR,run)
 	for cope in range(1,numcopes+1):
 		newcope = "%s/stats/zstat%d " % (feat_dir,cope)
-		command = command + newpart
+		command = command + newcope
 
 print(command)
 call(command,shell=True)
