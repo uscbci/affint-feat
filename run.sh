@@ -15,6 +15,10 @@ INPUT_DIR=$FLYWHEEL_BASE/input/
 MANIFEST=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
 
+#Colors
+RED='\033[0;31m'
+NC='\033[0m'
+
 ###############################################################################
 # Configure the ENV
 
@@ -72,6 +76,11 @@ unzip $logs_file -d $DATA_DIR/logs
 ls $DATA_DIR
 ls $DATA_DIR/logs
 
+echo "LISTING FILES IN FLYWHEEL_BASE:"
+ls ${FLYWHEEL_BASE}
+echo ""
+echo ""
+
 
 ##GET SUBJECT ID
 subfolder=`find $DATA_DIR/processed/fmriprep/sub-* -maxdepth 0 | head -1`
@@ -124,12 +133,12 @@ fi
 
 TEMPLATE=affectivepictures_template.fsf
 
-for RUN in {1..3}
+for RUN in {1..1}
 do
 	echo -e "\n\n${CONTAINER} Beginning analysis for affective pictures run ${RUN}"
 
 	INPUT_DATA=`eval 'echo $'func_affectivepictures_r${RUN} `
-	FEAT_OUTPUT_DIR=${OUTPUT_DIR}/affectivepictures_run${RUN}.feat 
+	FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.feat 
 	NEUTRAL_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Neutral_all.txt
 	FEAR_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Fear_all.txt
 	HAPPY_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Happy_all.txt
@@ -148,7 +157,7 @@ do
   if [ $NUMTIMEPOINTS -eq 186 ]; then
     echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
   else
-    echo "WARNING!!! Number of timepoints should be 186 but is ${NUMTIMEPOINTS}"
+    echo -e "${RED}WARNING!!! Number of timepoints should be 186 but is ${NUMTIMEPOINTS} ${NC}"
   fi
 
   VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV FEAR_EV HAPPY_EV SAD_EV DISGUST_EV NUMTIMEPOINTS)
@@ -181,6 +190,9 @@ do
 
 	echo What have we got now
 	ls ${OUTPUT_DIR}
+
+  #add a fake reg folder
+  ${FLYWHEEL_BASE}/make_reg_folder.py ${FEAT_OUTPUT_DIR}
 
 	# Upon success, convert index to a webpage
 	if [[ $FEAT_EXIT_STATUS == 0 ]]; then
@@ -234,7 +246,7 @@ TEMPLATE=emoreg_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for emoreg task"
 
 INPUT_DATA=`eval 'echo $'func_emoreg `
-FEAT_OUTPUT_DIR=${OUTPUT_DIR}/emoreg.feat 
+FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_emoreg.feat 
 NEUTRAL_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_neutral_all.txt
 NEGATIVE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_negative_all.txt
 REAPPRAISE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_Rnegative_all.txt
@@ -246,7 +258,7 @@ NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
 if [ $NUMTIMEPOINTS -eq 285 ]; then
   echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
 else
-  echo "WARNING!!! Number of timepoints should be 285 but is ${NUMTIMEPOINTS}"
+  echo -e "${RED}WARNING!!! Number of timepoints should be 285 but is ${NUMTIMEPOINTS} ${NC}"
 fi
 
 VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR NEUTRAL_EV NEGATIVE_EV REAPPRAISE_EV NUMTIMEPOINTS)
@@ -285,6 +297,9 @@ fi
 echo What have we got now
 ls ${OUTPUT_DIR}
 
+#add a fake reg folder
+${FLYWHEEL_BASE}/make_reg_folder.py ${FEAT_OUTPUT_DIR}
+
 # Upon success, convert index to a webpage
 if [[ $FEAT_EXIT_STATUS == 0 ]]; then
   # Convert index to standalone index
@@ -322,7 +337,7 @@ TEMPLATE=faces_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for faceemotion task"
 
 INPUT_DATA=`eval 'echo $'func_faceemotion`
-FEAT_OUTPUT_DIR=${OUTPUT_DIR}/faceemotion.feat
+FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_faceemotion.feat
 
 INSTRUCTIONS_EV=${DATA_DIR}/logs/${subject}-faceemotion-run1-faces-instructions.txt
 NAMING_EV=${DATA_DIR}/logs/${subject}-run1-faces-naming.txt
@@ -335,7 +350,7 @@ NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
 if [ $NUMTIMEPOINTS -eq 120 ]; then
   echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
 else
-  echo "WARNING!!! Number of timepoints should be 120 but is ${NUMTIMEPOINTS}"
+  echo -e "${RED} WARNING!!! Number of timepoints should be 120 but is ${NUMTIMEPOINTS} ${NC}"
 fi
 
 
@@ -375,6 +390,9 @@ fi
 echo What have we got now
 ls ${OUTPUT_DIR}
 
+#add a fake reg folder
+${FLYWHEEL_BASE}/make_reg_folder.py ${FEAT_OUTPUT_DIR}
+
 # Upon success, convert index to a webpage
 if [[ $FEAT_EXIT_STATUS == 0 ]]; then
   # Convert index to standalone index
@@ -410,7 +428,7 @@ TEMPLATE=tom_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for tom task"
 
 INPUT_DATA=`eval 'echo $'func_tom`
-FEAT_OUTPUT_DIR=${OUTPUT_DIR}/tom.feat
+FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_tom.feat
 
 PHYS_EV=${DATA_DIR}/logs/${subject}_tom_run1_physical_all.txt
 COG_EV=${DATA_DIR}/logs/${subject}_tom_run1_cognitive_tom_all.txt
@@ -423,7 +441,7 @@ NUMTIMEPOINTS=`fslinfo ${INPUT_DATA} | grep ^dim4 | awk {'print $2'}`
 if [ $NUMTIMEPOINTS -eq 234 ]; then
   echo "Number of timepoints is correct at ${NUMTIMEPOINTS}"
 else
-  echo "WARNING!!! Number of timepoints should be 234 but is ${NUMTIMEPOINTS}"
+  echo -e "${RED}WARNING!!! Number of timepoints should be 234 but is ${NUMTIMEPOINTS} ${NC}"
 fi
 
 VAR_STRINGS=( INPUT_DATA FEAT_OUTPUT_DIR PHYS_EV COG_EV AFFECT_EV NUMTIMEPOINTS)
@@ -461,6 +479,9 @@ fi
 
 echo What have we got now
 ls ${OUTPUT_DIR}
+
+#add a fake reg folder
+${FLYWHEEL_BASE}/make_reg_folder.py ${FEAT_OUTPUT_DIR}
 
 # Upon success, convert index to a webpage
 if [[ $FEAT_EXIT_STATUS == 0 ]]; then
