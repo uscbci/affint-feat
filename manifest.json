@@ -2,18 +2,10 @@
 	"name": "affint-feat",
 	"label": "BCI: Affective Intelligence FEAT analysis",
 	"description": "This gear does the basic GLM analysis for the Affective Intelligence project.",
-	"version": "0.2.3",
+	"version": "0.2.8",
 	"inputs": {
 		"api-key": {
 			"base": "api-key"
-		},
-		"fmriprep": {
-			"base": "file",
-			"description": "Zip file of the output from fmriprep to be processed"
-		},
-		"logfiles": {
-			"base": "file",
-			"description": "Zip file of 3-column stimulus timing files for FSL"
 		}
 	},
 	"config": {
