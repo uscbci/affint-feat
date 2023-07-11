@@ -15,6 +15,8 @@ INPUT_DIR=$FLYWHEEL_BASE/input/
 MANIFEST=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
 
+mkdir ${INPUT_DIR}
+
 #Colors
 RED='\033[0;31m'
 NC='\033[0m'
@@ -22,9 +24,10 @@ NC='\033[0m'
 ###############################################################################
 # Configure the ENV
 
-export FSLDIR=/opt/fsl-6.0.1
+export FSLDIR=/usr/local/fsl
 source $FSLDIR/etc/fslconf/fsl.sh
 export USER=Flywheel
+source ~/.bashrc
 
 
 ##############################################################################
@@ -43,89 +46,41 @@ function parse_config {
   fi
 }
 
+
+
+
 ###############################################################################
-# INPUT Files
+# Gather input files
+
+#run script to get input files
+${FLYWHEEL_BASE}/get_files.py
 
 #echo Lets look inside $INPUT_DIR
-#ls $INPUT_DIR
-#echo Lets look inside logfiles
-#ls $INPUT_DIR/logfiles
-
-fmriprep_file=`find $INPUT_DIR/fmriprep/* -maxdepth 0 -not -path '*/\.*' -type f -name "*.zip" | head -1`
-if [[ -z $fmriprep_file ]]; then
-  echo "$INPUT_DIR has no valid fmriprep files!"
-  exit 1
-fi
-
-###UNZIP THE FMRIPREP FILE AND RENAME THE FOLDER
-DATA_DIR=$FLYWHEEL_BASE/data
-mkdir $DATA_DIR
-unzip $fmriprep_file -d $DATA_DIR
-hashed_data_path=`find $DATA_DIR/* -maxdepth 0`
-mv $hashed_data_path $DATA_DIR/processed
-
-logs_file=`find $INPUT_DIR/logfiles/* -maxdepth 0 -not -path '*/\.*' -type f -name "*.zip" | head -1`
-
-if [[ -z $logs_file ]]; then
-  echo "$INPUT_DIR has no valid logfiles!"
-  exit 1
-fi
-
-mkdir ${DATA_DIR}/logs
-unzip $logs_file -d $DATA_DIR/logs
-ls $DATA_DIR
-ls $DATA_DIR/logs
+ls $INPUT_DIR
 
 echo "LISTING FILES IN FLYWHEEL_BASE:"
 ls ${FLYWHEEL_BASE}
 echo ""
 echo ""
 
+###############################################################################
+# Determine Subject ID
 
-##GET SUBJECT ID
-subfolder=`find $DATA_DIR/processed/fmriprep/sub-* -maxdepth 0 | head -1`
-subject=${subfolder: -4}
-echo Identified subject $subject
-subject_dir=$DATA_DIR/processed/fmriprep/sub-$subject
+subfolder=`find $INPUT_DIR/sub-* -maxdepth 0 | head -1`
+echo "Testing length of $subfolder: ${#subfolder}"
+if [[ ${#subfolder} > 37 ]]
+then
+  echo "3digit subject number detected"
+  subject=${subfolder: 0:5}
+else
+  echo "2digit subject number detected"
+  subject=${subfolder: 0:4}
+fi
 
-##DEFINE INPUT FILES
-func_affectivepictures_r1=$subject_dir/ses-KaplanAFFINTAffectiveIntelligence/func/sub-${subject}_ses-KaplanAFFINTAffectiveIntelligence_task-affectivepictures_run-01_space-MNI152NLin2009cAsym_desc-smoothAROMAnonaggr_bold.nii.gz
-func_affectivepictures_r2=$subject_dir/ses-KaplanAFFINTAffectiveIntelligence/func/sub-${subject}_ses-KaplanAFFINTAffectiveIntelligence_task-affectivepictures_run-02_space-MNI152NLin2009cAsym_desc-smoothAROMAnonaggr_bold.nii.gz
-func_affectivepictures_r3=$subject_dir/ses-KaplanAFFINTAffectiveIntelligence/func/sub-${subject}_ses-KaplanAFFINTAffectiveIntelligence_task-affectivepictures_run-03_space-MNI152NLin2009cAsym_desc-smoothAROMAnonaggr_bold.nii.gz
-func_emoreg=$subject_dir/ses-KaplanAFFINTAffectiveIntelligence/func/sub-${subject}_ses-KaplanAFFINTAffectiveIntelligence_task-emotionregulation_run-01_space-MNI152NLin2009cAsym_desc-smoothAROMAnonaggr_bold.nii.gz
-func_faceemotion=$subject_dir/ses-KaplanAFFINTAffectiveIntelligence/func/sub-${subject}_ses-KaplanAFFINTAffectiveIntelligence_task-faceemotion_run-01_space-MNI152NLin2009cAsym_desc-smoothAROMAnonaggr_bold.nii.gz
-func_tom=$subject_dir/ses-KaplanAFFINTAffectiveIntelligence/func/sub-${subject}_ses-KaplanAFFINTAffectiveIntelligence_task-tom_run-01_space-MNI152NLin2009cAsym_desc-smoothAROMAnonaggr_bold.nii.gz
+echo "Subject is $subject"
 
-if test -f $func_affectivepictures_r1; then
-	echo Found AffectivePictures run 1 file: $func_affectivepictures_r1
-else
-	echo Could not find $func_affectivepictures_r1
-fi
-if test -f $func_affectivepictures_r2; then
-	echo Found AffectivePictures run 2 file: $func_affectivepictures_r2
-else
-	echo Could not find $func_affectivepictures_r2
-fi
-if test -f $func_affectivepictures_r3; then
-	echo Found AffectivePictures run 3 file: $func_affectivepictures_r3
-else
-	echo Could not find $func_affectivepictures_r3
-fi
-if test -f $func_emoreg; then
-	echo Found emoreg file: $func_emoreg
-else
-	echo Could not find func_emoreg
-fi
-if test -f $func_faceemotion; then
-	echo Found face emotion file: $func_faceemotion
-else
-	echo Could not find func_faceemotion
-fi
-if test -f $func_tom; then
-	echo Found tom file: $func_tom
-else
-	echo Could not find func_tom
-fi
+
+
 
 ####################################################################
 # AFFECTIVEPICTURES ANALYSIS
@@ -137,7 +92,7 @@ for RUN in {1..1}
 do
 	echo -e "\n\n${CONTAINER} Beginning analysis for affective pictures run ${RUN}"
 
-	INPUT_DATA=`eval 'echo $'func_affectivepictures_r${RUN} `
+	INPUT_DATA=${INPUT_DIR}/${subject}_affpics${RUN}_cleaned_standard.nii.gz
 	FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.feat 
 	NEUTRAL_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Neutral_all.txt
 	FEAR_EV=${DATA_DIR}/logs/${subject}_affectivepictures_run${RUN}_Fear_all.txt
