@@ -200,7 +200,7 @@ ls ${OUTPUT_DIR}
 TEMPLATE=emoreg_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for emoreg task"
 
-INPUT_DATA=`eval 'echo $'func_emoreg `
+INPUT_DATA=${INPUT_DIR}/${subject}_emoreg_cleaned_standard.nii.gz
 FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_emoreg.feat 
 NEUTRAL_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_neutral_all.txt
 NEGATIVE_EV=${DATA_DIR}/logs/${subject}_emotionregulation_run1_negative_all.txt
@@ -291,7 +291,7 @@ ls ${OUTPUT_DIR}
 TEMPLATE=faces_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for faceemotion task"
 
-INPUT_DATA=`eval 'echo $'func_faceemotion`
+INPUT_DATA=${INPUT_DIR}/${subject}_faceemotion_cleaned_standard.nii.gz
 FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_faceemotion.feat
 
 INSTRUCTIONS_EV=${DATA_DIR}/logs/${subject}-faceemotion-run1-faces-instructions.txt
@@ -382,7 +382,7 @@ ls ${OUTPUT_DIR}
 TEMPLATE=tom_template.fsf
 echo -e "\n\n${CONTAINER} Beginning analysis for tom task"
 
-INPUT_DATA=`eval 'echo $'func_tom`
+INPUT_DATA=${INPUT_DIR}/${subject}_tom_cleaned_standard.nii.gz
 FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_tom.feat
 
 PHYS_EV=${DATA_DIR}/logs/${subject}_tom_run1_physical_all.txt
