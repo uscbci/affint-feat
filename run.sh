@@ -69,10 +69,10 @@ echo "Testing length of $subfolder: ${#subfolder}"
 if [[ ${#subfolder} > 37 ]]
 then
   echo "3digit subject number detected"
-  subject=${subfolder: 0:5}
+  subject=${subfolder: 21:5}
 else
   echo "2digit subject number detected"
-  subject=${subfolder: 0:4}
+  subject=${subfolder: :4}
 fi
 
 echo "Subject is $subject"
