@@ -14,8 +14,10 @@ OUTPUT_DIR=$FLYWHEEL_BASE/output
 INPUT_DIR=$FLYWHEEL_BASE/input/
 MANIFEST=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
+DATA_DIR=$INPUT_DIR
 
 mkdir ${INPUT_DIR}
+
 
 #Colors
 RED='\033[0;31m'
@@ -52,6 +54,10 @@ function parse_config {
 
 #run script to get input files
 ${FLYWHEEL_BASE}/get_files.py
+
+#unzip the logfiles
+mkdir ${DATA_DIR}/logs
+unzip logfiles.zip -d ${DATA_DIR}/logs
 
 #echo Lets look inside $INPUT_DIR
 ls $INPUT_DIR
