@@ -133,6 +133,8 @@ do
 	# RUN THE Algorithm with the .FSF FILE
 	ls $INPUT_DATA
 
+  cat ${DESIGN_FILE}
+
 	echo Starting FEAT for Affective Pictures run ${RUN}...
 	time feat ${DESIGN_FILE}
 	FEAT_EXIT_STATUS=$?
@@ -237,7 +239,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-# cat $DESIGN_FILE
+cat $DESIGN_FILE
 
 echo Starting FEAT for emoreg...
 time feat ${DESIGN_FILE}
@@ -330,7 +332,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-# cat $DESIGN_FILE
+cat $DESIGN_FILE
 
 echo Starting FEAT for faceemotion...
 time feat ${DESIGN_FILE}
@@ -420,7 +422,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-# cat $DESIGN_FILE
+cat $DESIGN_FILE
 
 echo Starting FEAT for theory of mind...
 time feat ${DESIGN_FILE}
