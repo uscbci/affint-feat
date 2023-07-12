@@ -38,15 +38,13 @@ function parse_config {
   CONFIG_FILE=$FLYWHEEL_BASE/config.json
   MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
 
-  if [[ -f $CONFIG_FILE ]]; then
-    echo "$(cat $CONFIG_FILE | jq -r '.config.'$1)"
-  else
-    CONFIG_FILE=$MANIFEST_FILE
-    echo "$(cat $MANIFEST_FILE | jq -r '.config.'$1'.default')"
-  fi
-}
-
-
+#   if [[ -f $CONFIG_FILE ]]; then
+#     echo "$(cat $CONFIG_FILE | jq -r '.config.'$1)"
+#   else
+#     CONFIG_FILE=$MANIFEST_FILE
+#     echo "$(cat $MANIFEST_FILE | jq -r '.config.'$1'.default')"
+#   fi
+# }
 
 
 ###############################################################################
@@ -66,7 +64,7 @@ echo ""
 ###############################################################################
 # Determine Subject ID
 
-subfolder=`find $INPUT_DIR/sub-* -maxdepth 0 | head -1`
+subfolder=`find $INPUT_DIR/*affpics1_cleaned* -maxdepth 0 | head -1`
 echo "Testing length of $subfolder: ${#subfolder}"
 if [[ ${#subfolder} > 37 ]]
 then
@@ -239,7 +237,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
 echo Starting FEAT for emoreg...
 time feat ${DESIGN_FILE}
@@ -332,7 +330,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
 echo Starting FEAT for faceemotion...
 time feat ${DESIGN_FILE}
@@ -422,7 +420,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
 echo Starting FEAT for theory of mind...
 time feat ${DESIGN_FILE}
