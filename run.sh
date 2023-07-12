@@ -57,7 +57,7 @@ ${FLYWHEEL_BASE}/get_files.py
 
 #unzip the logfiles
 mkdir ${DATA_DIR}/logs
-unzip logfiles.zip -d ${DATA_DIR}/logs
+unzip ${DATA_DIR}/logfiles.zip -d ${DATA_DIR}/logs
 
 #echo Lets look inside $INPUT_DIR
 ls $INPUT_DIR
