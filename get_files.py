@@ -19,12 +19,9 @@ anal = fw.get_analysis(analysis_id)
 session_id = anal.parent.id
 session = fw.get_session(session_id)
 
-# fmriprepfound = False
-
-# xfm_files = []
 for analysis in session.analyses:
     if 'fsl-preprocessing' in analysis.gear_info.name:
-        print("Found FSL Preprocessing Analysis")
+        print("Found FSL Preprocessing Analysis: %s" % analysis.gear_info.name)
         for resultfile in analysis.files:
             if ("affpics" and ".nii.gz") in resultfile.name:
                 print("Downloading file %s" % resultfile.name)

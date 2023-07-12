@@ -44,7 +44,7 @@ function parse_config {
 #     CONFIG_FILE=$MANIFEST_FILE
 #     echo "$(cat $MANIFEST_FILE | jq -r '.config.'$1'.default')"
 #   fi
-# }
+}
 
 
 ###############################################################################
@@ -64,7 +64,7 @@ echo ""
 ###############################################################################
 # Determine Subject ID
 
-subfolder=`find $INPUT_DIR/*affpics1_cleaned* -maxdepth 0 | head -1`
+subfolder=`find $INPUT_DIR/*affpics1_cleaned -maxdepth 0 | head -1`
 echo "Testing length of $subfolder: ${#subfolder}"
 if [[ ${#subfolder} > 37 ]]
 then
