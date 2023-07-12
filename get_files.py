@@ -27,17 +27,17 @@ for analysis in session.analyses:
         print("Found FSL Preprocessing Analysis")
         for resultfile in analysis.files:
             if ("affpics" and ".nii.gz") in resultfile.name:
-                print("Downloading file %s" % resultfile)
-                resultfile.download("input/%s" % resultfile)
+                print("Downloading file %s" % resultfile.name)
+                resultfile.download("input/%s" % resultfile.name)
             if ("tom" and ".nii.gz") in resultfile.name:
-                print("Downloading file %s" % resultfile)
-                resultfile.download("input/%s" % resultfile)
+                print("Downloading file %s" % resultfile.name)
+                resultfile.download("input/%s" % resultfile.name)
             if ("emoreg" and ".nii.gz") in resultfile.name:
-                print("Downloading file %s" % resultfile)
-                resultfile.download("input/%s" % resultfile)
+                print("Downloading file %s" % resultfile.name)
+                resultfile.download("input/%s" % resultfile.name)
             if ("faceemotion" and ".nii.gz") in resultfile.name:
-                print("Downloading file %s" % resultfile)
-                resultfile.download("input/%s" % resultfile)
+                print("Downloading file %s" % resultfile.name)
+                resultfile.download("input/%s" % resultfile.name)
 
 
 for file in session.files:
