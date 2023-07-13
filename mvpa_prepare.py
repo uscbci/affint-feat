@@ -5,7 +5,7 @@ from subprocess import call
 
 #command line options
 if (len(sys.argv) < 2):
-	print "\n\tusage: %s <subject>\n" % sys.argv[0]
+	print("\n\tusage: %s <subject>\n" % sys.argv[0])
 	sys.exit()
 else:
 	subject = sys.argv[1]	

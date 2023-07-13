@@ -11,7 +11,7 @@ echo -e "$CONTAINER  Initiated"
 
 FLYWHEEL_BASE=/flywheel/v0
 OUTPUT_DIR=$FLYWHEEL_BASE/output
-INPUT_DIR=$FLYWHEEL_BASE/input/
+INPUT_DIR=$FLYWHEEL_BASE/input
 MANIFEST=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
 DATA_DIR=$INPUT_DIR
@@ -58,6 +58,9 @@ ${FLYWHEEL_BASE}/get_files.py
 #unzip the logfiles
 mkdir ${DATA_DIR}/logs
 unzip ${DATA_DIR}/logfiles.zip -d ${DATA_DIR}/logs
+
+echo Looking in /input/logs:
+ls ${INPUT_DIR}/logs
 
 #echo Lets look inside $INPUT_DIR
 ls $INPUT_DIR
