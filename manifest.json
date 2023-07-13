@@ -2,7 +2,7 @@
 	"name": "affint-feat",
 	"label": "BCI: Affective Intelligence FEAT analysis",
 	"description": "This gear does the basic GLM analysis for the Affective Intelligence project.",
-	"version": "0.3.11",
+	"version": "0.3.12",
 	"inputs": {
 		"api-key": {
 			"base": "api-key"
