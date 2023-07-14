@@ -16,8 +16,7 @@ MANIFEST=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
 DATA_DIR=$INPUT_DIR
 
-mkdir ${INPUT_DIR}
-
+[ ! -d ${INPUT_DIR} ] && mkdir ${INPUT_DIR}
 
 #Colors
 RED='\033[0;31m'
@@ -95,7 +94,7 @@ echo "Subject is $subject"
 
 TEMPLATE=affectivepictures_template.fsf
 
-for RUN in {1..1}
+for RUN in {1..3}
 do
 	echo -e "\n\n${CONTAINER} Beginning analysis for affective pictures run ${RUN}"
 
@@ -142,7 +141,7 @@ do
 	# RUN THE Algorithm with the .FSF FILE
 	ls $INPUT_DATA
 
-  cat ${DESIGN_FILE}
+  # cat ${DESIGN_FILE}
 
 	echo Starting FEAT for Affective Pictures run ${RUN}...
 	time feat ${DESIGN_FILE}
@@ -165,7 +164,7 @@ do
 	  output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
 	  for f in $output_html_files; do
 	    web2htmloutput=${OUTPUT_DIR}/${subject}_affpics_run${RUN}_`basename $f`
-	    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+	    python /flywheel/v0/webpage2html.py -q -s "$f" > "$web2htmloutput"
 	  done
 	fi
 
@@ -186,7 +185,7 @@ ${FLYWHEEL_BASE}/mvpa_prepare.py ${subject}
 
 for RUN in {1..3}
 do
-  FEAT_OUTPUT_DIR=${OUTPUT_DIR}/affectivepictures_run${RUN}.feat 
+  FEAT_OUTPUT_DIR=${OUTPUT_DIR}/${subject}_affectivepictures_run${RUN}.feat  
   echo feat directory is ${FEAT_OUTPUT_DIR}
 
   if [[ $FEAT_EXIT_STATUS == 0 ]]; then
@@ -248,7 +247,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
 echo Starting FEAT for emoreg...
 time feat ${DESIGN_FILE}
@@ -341,7 +340,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
 echo Starting FEAT for faceemotion...
 time feat ${DESIGN_FILE}
@@ -431,7 +430,7 @@ done
 # RUN THE Algorithm with the .FSF FILE
 ls $INPUT_DATA
 
-cat $DESIGN_FILE
+# cat $DESIGN_FILE
 
 echo Starting FEAT for theory of mind...
 time feat ${DESIGN_FILE}

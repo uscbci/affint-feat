@@ -22,7 +22,7 @@ numcopes = 5
 command = "fslmerge -t %s/%s_affectivepictures_allzstats " % (OUTPUT_DIR,subject)
 
 for run in range(1,4):
-	feat_dir = "%s/affectivepictures_run%d.feat" % (OUTPUT_DIR,run)
+	feat_dir = "%s/%s_affectivepictures_run%d.feat" % (OUTPUT_DIR,subject,run)
 	for cope in range(1,numcopes+1):
 		newcope = "%s/stats/zstat%d " % (feat_dir,cope)
 		command = command + newcope

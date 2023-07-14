@@ -53,7 +53,7 @@ set fmri(multiple) 1
 set fmri(inputtype) 2
 
 # Carry out pre-stats processing?
-set fmri(filtering_yn) 1
+set fmri(filtering_yn) 0
 
 # Brain/background threshold, %
 set fmri(brain_thresh) 10
@@ -109,7 +109,7 @@ set fmri(st_file) ""
 set fmri(bet_yn) 1
 
 # Spatial smoothing FWHM (mm)
-set fmri(smooth) 5
+set fmri(smooth) 0
 
 # Intensity normalization
 set fmri(norm_yn) 0
@@ -118,7 +118,7 @@ set fmri(norm_yn) 0
 set fmri(perfsub_yn) 0
 
 # Highpass temporal filtering
-set fmri(temphp_yn) 1
+set fmri(temphp_yn) 0
 
 # Lowpass temporal filtering
 set fmri(templp_yn) 0

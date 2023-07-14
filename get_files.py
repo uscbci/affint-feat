@@ -6,6 +6,7 @@ import re
 import json
 import subprocess as sp
 
+print("Beginning get_files.py script")
 # Grab Config
 CONFIG_FILE_PATH = '/flywheel/v0/config.json'
 with open(CONFIG_FILE_PATH) as config_file:
@@ -13,6 +14,7 @@ with open(CONFIG_FILE_PATH) as config_file:
 
 api_key = config['inputs']['api-key']['key']
 analysis_id = config['destination']['id']
+
 
 fw = flywheel.Client(api_key)
 anal = fw.get_analysis(analysis_id)

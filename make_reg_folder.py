@@ -14,7 +14,7 @@ if not os.path.exists(regfolder):
 	os.mkdir(regfolder)
 
 identity_matrix = "%s/ident.mat" % FLYWHEEL_BASE
-standard_image = "%s/standard.nii.gz" % FLYWHEEL_BASE
+standard_image = "$FSLDIR/data/standard/MNI152_T1_2mm.nii.gz"
 
 command = "cp %s/example_func.nii.gz %s/reg/example_func.nii.gz " % (featfolder,featfolder)
 print(command)
