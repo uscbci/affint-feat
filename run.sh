@@ -164,7 +164,7 @@ do
 	  output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
 	  for f in $output_html_files; do
 	    web2htmloutput=${OUTPUT_DIR}/${subject}_affpics_run${RUN}_`basename $f`
-	    python /flywheel/v0/webpage2html.py -q -s "$f" > "$web2htmloutput"
+	    /opt/conda/envs/py2/bin/python /flywheel/v0/webpage2html.py -q -s "$f" > "$web2htmloutput"
 	  done
 	fi
 
@@ -270,7 +270,7 @@ if [[ $FEAT_EXIT_STATUS == 0 ]]; then
   output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
   for f in $output_html_files; do
     web2htmloutput=${OUTPUT_DIR}/${subject}_emoreg_`basename $f`
-    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+    /opt/conda/envs/py2/bin/python /flywheel/v0/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
   done
 fi
 
@@ -363,7 +363,7 @@ if [[ $FEAT_EXIT_STATUS == 0 ]]; then
   output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
   for f in $output_html_files; do
     web2htmloutput=${OUTPUT_DIR}/${subject}_faceemotion_`basename $f`
-    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+    /opt/conda/envs/py2/bin/python /flywheel/v0/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
   done
 fi
 
@@ -453,7 +453,7 @@ if [[ $FEAT_EXIT_STATUS == 0 ]]; then
   output_html_files=$(find ${FEAT_OUTPUT_DIR} -type f -name "report_poststats.html")
   for f in $output_html_files; do
     web2htmloutput=${OUTPUT_DIR}/${subject}_tom_`basename $f`
-    python /opt/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
+    /opt/conda/envs/py2/bin/python /flywheel/v0/webpage2html/webpage2html.py -q -s "$f" > "$web2htmloutput"
   done
 fi
 
