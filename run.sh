@@ -74,7 +74,7 @@ echo ""
 
 subfolder=`find $INPUT_DIR/*affpics1_cleaned* -maxdepth 0 | head -1`
 echo "Testing length of $subfolder: ${#subfolder}"
-if [[ ${#subfolder} > 37 ]]
+if [[ ${#subfolder} > 56 ]]
 then
   echo "3digit subject number detected"
   subject=${subfolder: 19:5}
