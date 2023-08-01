@@ -19,6 +19,7 @@ analysis_id = config['destination']['id']
 fw = flywheel.Client(api_key)
 anal = fw.get_analysis(analysis_id)
 session_id = anal.parent.id
+
 session = fw.get_session(session_id)
 
 for analysis in session.analyses:
